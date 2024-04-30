@@ -1,0 +1,115 @@
+
+.main_print_bill{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: fixed;
+    overflow : hidden;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%); 
+    bottom: 0; 
+    
+}
+.collapse{
+    transform: translateX(0%);
+}
+
+.print_bill_close{
+    border-radius: 100%;
+    height: 3vw;
+    width: 3vw;
+    position: relative;
+    top: -3vw;
+    left: 42vw;
+    position: relative;
+    font-size: 2vw;
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.print_bill_box{
+    height: 60%;
+    width: 90%;
+    background-color: #3D270B;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    color: white ; 
+    position: absolute;
+    
+}
+
+
+.print_bill_headings{
+    font-size: 1.5vw;
+    
+}
+.print_bill_type{
+   
+    padding-bottom: 1vw;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 38%;
+}
+.print_bill_type span{
+    font-size: 1.7vw;
+    font-weight: 600;
+    margin-right: 1vw;
+}
+.print_bill_type input{
+    font-size: 1.5vw;
+    height: 2vw;
+    background: transparent;
+    border: 2px solid white;
+}
+.print_bill_type select {
+    font-size: 1.5vw;
+    height: 2.8vw;
+    background: transparent;
+    border: 2px solid white;
+    color: white ;
+    width: 16vw;
+}
+.print_bill_type option{
+    color: black;
+}
+.print_bill_amount{
+   
+    padding-bottom: 1vw;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 38%;
+}
+
+.print_bill_amount span{
+    font-size: 1.7vw;
+    font-weight: 600;
+    padding-right: 1vw;
+
+}
+.print_bill_amount input{
+    font-size: 1.5vw;
+    height: 2.3vw;
+    background: transparent;
+    border: 2px solid white;
+    width: 15.5vw;
+}
+
+.print_bill_box .submit_print_bill{
+    margin-top: 2vw;
+    height: 2.8vw;
+    width: 12vw;
+    border-radius: 5px;
+    border: 2px solid white;
+    font-size: 1.6vw;
+}
+

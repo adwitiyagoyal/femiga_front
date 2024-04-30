@@ -1,0 +1,36 @@
+.main_nav{
+    background-color: #3D270B;
+    width: 100vw;
+    height: 6vw;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.menu{
+    width: 5%;
+    height: 100%;
+    
+}
+.menu button{
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+.menu button svg{
+    height: 80%;
+    width: 60%;
+    color: white;
+}
+.logo{
+    width: 95%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.main_hero{
+    width: 100vw;
+    
+    background: linear-gradient(360deg, #3D270B -199.17%, rgba(163, 104, 29, 0) 100%);
+    font-family: "Montserrat", sans-serif;
+    position: absolute;
+    left: 0;
+    top: 6vw;
+   
+    
+}
+
+/* BILL NUMBER AND CASHIER DETAILS */
+.cashier{
+    width: 100vw;
+    height: 5.6vw;
+    border-bottom: 1px solid black;
+   
+    
+}
+.details_cashier{
+    display: flex;
+    height: 100%;
+    width: 60vw;
+
+}
+.bill_no{
+    display: flex;
+    justify-content:left;
+    align-items: center;
+    width: 18vw;
+ 
+    font-size: 1.5vw ;
+    font-weight: 500;
+    padding-left: 2vw;
+}
+.cashier_name{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42vw;
+
+    font-size: 1.5vw ;
+    font-weight: 500;
+}
+.cashier_name span{
+    padding-right: 0.5vw;
+}
+.cashier_name select{
+    outline: none;
+    width: 15vw;
+    height: 46%;
+    padding-left: 0.5vw;
+}
+select option:hover {
+    background-color: #3D270B;
+}
+
+/* ----------------------- */
+
+/* customer details */
+.customer_details{
+    width: 100vw;
+    height: 10vw;
+
+    
+}
+.heading_customer_details{
+    height: 40%;
+    display: flex;
+    align-items: center;
+    font-size: 1.6vw ;
+    padding-left: 3.4vw;
+    font-weight: 600;
+    padding-top: 0.5vw;
+}
+.customer_details_main{
+    height: 60%;
+    display: flex;
+    
+    font-weight: 500;
+    align-items: center;
+    padding-left: vw;
+    gap: 0.3vw;
+    justify-content: space-evenly;
+
+}
+.customer_details_main span{
+    padding-right: 0.5vw;
+    display: inline-block;
+    width: auto;
+}
+.customer_details_main input{
+    width: 13vw;
+    height: 2vw;
+    padding-left: 0.5vw;
+}
+.customer_details_box{
+    display: flex;
+    align-items: center;
+    height: 100%;
+}   
+/* ----------------------- */
+
+/* BILLING DETAILS */
+.billing_details{
+    height: 34vw;
+    width: 95vw;
+    background-color: white;
+    margin-left: 2.5vw;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.billing_details_heading{
+    height: 4.2vw;
+    width: 97%;
+    /* background-color: yellow; */
+    display: flex;
+    align-items: center;
+    font-size: 1.5vw;
+    font-weight: 500;
+}
+.billing_details_main{
+    width: 97%;
+    height: 85%;
+    /* background-color: green; */
+}
+.billing_details_main_header{
+    height: 3.3vw;
+    /* background-color: pink; */
+    display: flex;
+}
+.billing_details_main_header .serial_num{
+    /* background-color: aquamarine; */
+    height: 3.3vw;
+    width: 12%;   
+}
+.billing_details_main_header .product_name{
+    /* background-color: gray; */
+    height: 3.3vw;
+    width: 26%;   
+}
+.billing_details_main_header .qty{
+    /* background-color: orange; */
+    height: 3.3vw;
+    width: 11%;   
+}
+.billing_details_main_header .price{
+    /* background-color: papayawhip; */
+    height: 3.3vw;
+    width: 11%;   
+}
+.billing_details_main_header .gst{
+    /* background-color: red; */
+    height: 3.3vw;
+    width: 7%;   
+}
+.billing_details_main_header .disc{
+    /* background-color: burlywood; */
+    height: 3.3vw;
+    width: 13%;   
+}
+.billing_details_main_header .amount{
+    /* background-color: gold; */
+    height: 3.3vw;
+    width: 11%;   
+}
+.billing_details_main_header .remove{
+    /* background-color: wheat; */
+    height: 3.3vw;
+    width: 9%;   
+}
+.billing_details_main_header .billing_details_entry{
+    display: flex;
+    align-items: center;
+    font-size: 1.5vw;
+    font-weight: 500;
+    border-bottom: 1px solid black;
+}
+
+/* ----------------------- */
+
+/* ITEM DETAILS */
+.item_details{
+    height: 4.5vw;
+    width: 95vw;
+    background: white;
+    margin-top: 2vw;
+    margin-left: 2.5vw;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.item_details .item_no{
+    height: 2.4vw;
+    width: 9%;
+    border-radius: 6px;
+    border: 1px solid black;
+    padding-left: 0.8vw;
+    color: black;
+    font-size: 1.1vw;
+}
+.item_details .product_details{
+    height: 2.4vw;
+    width: 35%;
+    border-radius: 6px;
+    border: 1px solid black;
+    padding-left: 0.8vw;
+    color: black;
+    font-size: 1.3vw;
+}
+.item_details input{
+    height: 2.4vw;
+    width: 9%;
+    border-radius: 6px;
+    border: 1px solid black;
+    padding-left: 0.8vw;
+    color: black;
+    font-size: 1.3vw;
+}
+.item_details input::placeholder{
+    color: black;
+}
+
+/* ----------------------- */
+
+/* EXTRAS */
+.extras{
+    height: 8vw;
+    width: 95vw;
+   
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2vw;
+    margin-left: 2.5vw;
+}
+
+.extras .final_count .items_count{
+    
+    font-size: 1.5vw;
+    height: 30%;
+    width: 100%;
+    display: flex;
+}
+.extras .final_count .total_amount{
+   
+    font-size: 1.2vw;
+    height: 60%;
+    width: 100%;
+    display: flex;
+}
+.extras .additionals{
+    height: 100%;
+   
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-right: 3vw;
+    
+}
+.extras .additionals button{
+    background-color: #3D270B;
+    height: 3.2vw;
+    width: 17vw;
+    font-size: 1.2vw;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+
+}
+
+
+
+
+
