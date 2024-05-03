@@ -3,7 +3,34 @@ import './Hero.css'
 import { useState } from 'react';
 
 function Hero({toggleCharge,toggleBill}) {
+    //calculating amount
+    const [price, setPrice] = useState('');
+    const [qty, setQty] = useState('');
+    const [disc, setDisc] = useState('');
+    const [amount, setAmount] = useState('');
 
+    const calculateAmount = (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          let discount = 0;
+    
+          // Check if '%' sign is present at the end of discount input
+          const totalPrice = parseFloat(price) * parseFloat(qty);
+          if (disc.trim().endsWith('%')) {
+            discount = totalPrice*parseFloat(disc) / 100; // Convert percentage to decimal
+          } else {
+            discount = parseFloat(disc);
+          }
+    
+          
+          const discountedAmount = totalPrice - ( discount);
+          setAmount(discountedAmount.toFixed(2));
+          console.log(amount);
+        }
+      };
+
+
+    //input rules
     const [inputs, setInputs] = useState({
         name: '',
         email: '',
@@ -161,10 +188,10 @@ function Hero({toggleCharge,toggleBill}) {
                 <option value="item3">Product 3</option>
             </select>
 
-            <input type="text" placeholder='Price' />
-            <input type="text" placeholder='Qty' />
-            <input type="text" placeholder='Disc%' />
-            <input type="text" placeholder='Amount' />
+            <input type="text" className="price" placeholder='Price' value={price} onChange={(e) => setPrice(e.target.value)} />
+            <input type="text" className="qty" placeholder='Qty' value={qty} onChange={(e) => setQty(e.target.value)} />
+            <input type="text" className="disc" placeholder='Disc%' value={disc} onKeyPress={calculateAmount} onChange={(e) => setDisc(e.target.value)} />
+            <input type="text" className="amount" placeholder='Amount' value={amount} onKeyPress={calculateAmount} readOnly />
         </div>
 
         {/* --------------------- */}
