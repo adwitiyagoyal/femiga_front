@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Print_bill.css'
 import { IoMdClose } from "react-icons/io";
-function Print_bill({open,toggler}) {
+function Print_bill({open,toggler, totalAmount }) {
+    
     return (
         
         <div className={open ?'main_print_bill collapse' :'main_print_bill' }>
@@ -11,7 +12,7 @@ function Print_bill({open,toggler}) {
     
               
                 <div className="print_bill_headings">
-                  <h1>Total Amount : 1422</h1>
+                  <h1>Total Amount : {totalAmount}</h1>
                 </div>
                 <div className="print_bill_type">
                   <span> Mode of Payment : </span>
@@ -24,7 +25,7 @@ function Print_bill({open,toggler}) {
                 </div>
                 <div className="print_bill_amount">
                   <span>Total : </span>
-                  <input type="number" name="" id="" />
+                  <input type="number" value={totalAmount} name="" id="" />
                 </div>
     
                 <button className='submit_print_bill'>Print Bill</button>

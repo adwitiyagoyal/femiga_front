@@ -11,17 +11,17 @@ import Print_bill from './components/Print_bill'
 function App() {
   
   const [openSidebar, setOpenSidebar] = useState(false);
-  const [openAdditional_charge,setopenAdditional_charge] = useState(false);
-  const [openPrint_bill,setOpenPrint_bill] = useState(false);
+  //const [openAdditional_charge,setopenAdditional_charge] = useState(false);
+  // const [openPrint_bill,setOpenPrint_bill] = useState(false);
   const toggleSidebar = () => {
     setOpenSidebar(!openSidebar);
   }
-  const toggleAdditional_charge = () => {
-    setopenAdditional_charge(!openAdditional_charge);
-  }
-  const togglePrint_bill = () => {
-    setOpenPrint_bill(!openPrint_bill)
-  }
+  // const toggleAdditional_charge = () => {
+  //   setopenAdditional_charge(!openAdditional_charge);
+  // }
+  // const togglePrint_bill = () => {
+  //   setOpenPrint_bill(!openPrint_bill)
+  // }
   
   return (
     <>
@@ -29,10 +29,11 @@ function App() {
       
       <Navbar toggleSidebar={toggleSidebar}/>
       
-      <Hero toggleCharge={toggleAdditional_charge} toggleBill={togglePrint_bill} />
-      <Additional_charge open={openAdditional_charge} toggler={toggleAdditional_charge}/>
+      <Hero   />
+     
       
-      <Print_bill open={openPrint_bill} toggler={togglePrint_bill}/>
+      
+      {/* <Print_bill open={openPrint_bill} toggler={togglePrint_bill}/> */}
 
     </>
   )

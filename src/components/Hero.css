@@ -23,14 +23,15 @@
 .details_cashier{
     display: flex;
     height: 100%;
-    width: 60vw;
+    width: 100vw;
+    gap: 4vw;
 
 }
 .bill_no{
     display: flex;
     justify-content:left;
     align-items: center;
-    width: 18vw;
+    
  
     font-size: 1.5vw ;
     font-weight: 500;
@@ -40,7 +41,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 42vw;
+    
+
+    font-size: 1.5vw ;
+    font-weight: 500;
+}
+.mode_of_payment{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 
     font-size: 1.5vw ;
     font-weight: 500;
@@ -54,8 +64,22 @@
     height: 46%;
     padding-left: 0.5vw;
 }
+.mode_of_payment span{
+    padding-right: 0.5vw;
+}
+.mode_of_payment select{
+    outline: none;
+    width: 7vw;
+    height: 46%;
+    padding-left: 0.5vw;
+}
 select option:hover {
     background-color: #3D270B;
+}
+.hero_date{
+    height: 44%;
+    outline: none;
+    margin-top: 1.4vw;
 }
 
 /* ----------------------- */
@@ -106,7 +130,7 @@ select option:hover {
 
 /* BILLING DETAILS */
 .billing_details{
-    height: 34vw;
+    min-height: 37vw;
     width: 95vw;
     background-color: white;
     margin-left: 2.5vw;
@@ -182,6 +206,21 @@ select option:hover {
     border-bottom: 1px solid black;
 }
 
+.billing_details_main_header input{
+    font-size: 1.4vw;
+    border: none;
+    outline: none;
+}
+.billing_details_entry button{
+ border: none;
+ font-size: 1.4vw;
+ margin-left: 0.7vw;
+ outline: none;
+ border-radius: 10%;
+}
+.billing_details_entry button:hover{
+    background-color: gray;
+}
 /* ----------------------- */
 
 /* ITEM DETAILS */
@@ -196,9 +235,12 @@ select option:hover {
     align-items: center;
     justify-content: space-evenly;
 }
+.choose_item_no{
+    width: 9%;
+}
 .item_details .item_no{
     height: 2.4vw;
-    width: 9%;
+    width: 100%;
     border-radius: 6px;
     border: 1px solid black;
     padding-left: 0.8vw;
@@ -207,7 +249,7 @@ select option:hover {
 }
 .item_details .product_details{
     height: 2.4vw;
-    width: 35%;
+    width: 25%;
     border-radius: 6px;
     border: 1px solid black;
     padding-left: 0.8vw;
@@ -216,7 +258,7 @@ select option:hover {
 }
 .item_details input{
     height: 2.4vw;
-    width: 9%;
+    width: 8%;
     border-radius: 6px;
     border: 1px solid black;
     padding-left: 0.8vw;
@@ -226,8 +268,52 @@ select option:hover {
 .item_details input::placeholder{
     color: black;
 }
+.options_item_no:hover {
+    background-color: #f7fafc; /* This is the color code for grey-100 in Tailwind CSS */
+}
+.options_item_no{
+    height: 3vh;
+    width: 9vw;
+    background-color: rgb(215, 210, 204);
+    color: black;
+    padding: 0.3vw;
+    border-bottom: 1px solid#3D270B;
+}
+
+.box_item_no {
+    /* Any existing styles for .box_item_no */
+    /* Add box shadow */
+    font-size: 1.3vw;
+    width: 100%;
+    position: absolute;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adjust values as needed */
+
+}
+.choose_item_no input{
+    position: relative;
+
+}
+
+.additional_parameters input{
+    border-radius: 10%;
+}
 
 /* ----------------------- */
+.add_product{
+    width: 97%;
+    height: 5vh;
+    
+    display: flex;
+    align-items:center;
+    justify-content: end; 
+    padding-top: 1vw;
+}
+.add_product button{
+    height: 4vh;
+    background-color: #3D270B;
+    width: 7vw;
+    color: wheat;
+}
 
 /* EXTRAS */
 .extras{
