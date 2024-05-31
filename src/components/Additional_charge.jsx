@@ -3,14 +3,14 @@ import './Additional_charge.css';
 import { IoMdClose } from "react-icons/io";
 
 function Additional_charge({ open, toggler, onAddCharge }) {
-  const [chargeType, setChargeType] = useState('');
+  
   const [chargeAmount, setChargeAmount] = useState('');
 
   const handleAddCharge = () => {
     const amount = parseFloat(chargeAmount);
-    if (!isNaN(amount) && chargeType.trim() !== '') {
+    if (!isNaN(amount)) {
       onAddCharge(amount); // Call the passed function
-      setChargeType('');
+      
       setChargeAmount('');
     }
   };
@@ -22,15 +22,7 @@ function Additional_charge({ open, toggler, onAddCharge }) {
         <div className="additional_charge_headings">
           <h1>Add Additional Charges</h1>
         </div>
-        <div className="additional_charge_type">
-          <span>Charge type : </span>
-          <input
-            type="text"
-            placeholder="Enter charge type"
-            value={chargeType}
-            onChange={(e) => setChargeType(e.target.value)}
-          />
-        </div>
+
         <div className="additional_charge_amount">
           <span>Charge Amount : </span>
           <input

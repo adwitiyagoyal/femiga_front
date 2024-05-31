@@ -13,9 +13,8 @@
     left: 0;
     transform: translateX(-100%); 
     bottom: 0; 
-    z-index: 1;
+    z-index: 2;
 }
-
 .collapse{
     transform: translateX(0%);
 }
@@ -82,6 +81,7 @@
     height: 2vw;
     background: transparent;
     border: 2px solid white;
+    color: white    ;
 }
 
 .additional_charge_box .submit_additional_charge{

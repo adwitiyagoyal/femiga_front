@@ -177,11 +177,13 @@ select option:hover {
     /* background-color: papayawhip; */
     height: 3.3vw;
     width: 11%;   
+ 
+    
 }
 .billing_details_main_header .gst{
     /* background-color: red; */
     height: 3.3vw;
-    width: 7%;   
+    width: 10%;   
 }
 .billing_details_main_header .disc{
     /* background-color: burlywood; */
@@ -296,6 +298,15 @@ select option:hover {
 
 .additional_parameters input{
     border-radius: 10%;
+}
+.product_variant_selector{
+    height: 2.4vw;
+    width: 25%;
+    border-radius: 6px;
+    border: 1px solid black;
+    padding-left: 0.8vw;
+    color: black;
+    font-size: 1.3vw;
 }
 
 /* ----------------------- */

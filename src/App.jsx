@@ -1,42 +1,30 @@
-import { useState } from 'react'
-import './App.css'
-import Hero from './components/Hero'
-import Navbar from './components/Navbar'
-import Sidebar from './components/Sidebar'
-import './components/Sidebar.css'
-import Additional_charge from './components/Additional_charge'
-import Print_bill from './components/Print_bill'
-
+import React, { useState } from 'react';
+import './App.css';
+import Hero from './components/Hero';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import './components/Sidebar.css';
+import Login from './components/Login';
 
 function App() {
-  
   const [openSidebar, setOpenSidebar] = useState(false);
-  //const [openAdditional_charge,setopenAdditional_charge] = useState(false);
-  // const [openPrint_bill,setOpenPrint_bill] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const toggleSidebar = () => {
     setOpenSidebar(!openSidebar);
-  }
-  // const toggleAdditional_charge = () => {
-  //   setopenAdditional_charge(!openAdditional_charge);
-  // }
-  // const togglePrint_bill = () => {
-  //   setOpenPrint_bill(!openPrint_bill)
-  // }
-  
+  };
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+  };
+
   return (
     <>
       <Sidebar openSidebar={openSidebar} toggleSidebar={toggleSidebar} />
-      
-      <Navbar toggleSidebar={toggleSidebar}/>
-      
-      <Hero   />
-     
-      
-      
-      {/* <Print_bill open={openPrint_bill} toggler={togglePrint_bill}/> */}
-
+      <Navbar toggleSidebar={toggleSidebar} />
+      {isLoggedIn ? <Hero /> : <Login onLoginSuccess={handleLoginSuccess} />}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

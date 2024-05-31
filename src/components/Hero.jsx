@@ -1,45 +1,72 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Hero.css';
 import Additional_charge from './Additional_charge';
-import Print_bill from './Print_bill';
+
 
 function Hero() {
+
+  const [billNumber, setBillNumber] = useState('');
+
+  useEffect(() => {
+    const fetchBillCount = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/bill/count/total');
+        const data = await response.json();
+        if (data.success) {
+          const formattedBillNumber = `FMG-${data.billCount + 1001}`;
+          setBillNumber(formattedBillNumber);
+        } else {
+          console.error('Failed to fetch bill count');
+        }
+      } catch (error) {
+        console.error('Error fetching bill count:', error);
+      }
+    };
+
+    fetchBillCount();
+  }, []);
+  //----------------ADDITIONAL CHARGE AND PRINT BILL PART----------------------//
   const [openAdditional_charge,setopenAdditional_charge] = useState(false);
-  const [openPrint_bill,setOpenPrint_bill] = useState(false);
+  
   const toggleAdditional_charge = () => {
     setopenAdditional_charge(!openAdditional_charge);
   }
-  const togglePrint_bill = () => {
-    setOpenPrint_bill(!openPrint_bill);
-  }
-  //-----------------------//
+
+  
   const [additionalCharges, setAdditionalCharges] = useState(0);
   const handleAddCharge = (chargeAmount) => {
     setAdditionalCharges(prevCharges => prevCharges + chargeAmount);
     
   };
 
+  //----------------------------------//
+
+  //----------------FETCHING TODAYS DATE----------------------//
+
+      // Function to get today's date in YYYY-MM-DD format
+      const getTodayDate = () => {
+        const today = new Date();
+        
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      };
+    
+      // Use useState to set the default date to today's date
+      const [selectedDate, setSelectedDate] = useState(getTodayDate());
+      
+    
+      // Handle the date change
+      const handleDateChange = (event) => {
+        setSelectedDate(event.target.value);
+      };
+
 
   
   //-----------------------------//
 
-
-  // State for amount calculation
-  const [price, setPrice] = useState('');
-  const [qty, setQty] = useState('1'); // Default quantity to 1
-  const [disc, setDisc] = useState('');
-  const [amount, setAmount] = useState('');
-
-  // State for product details
-  const [itemNos, setItemNos] = useState([]);
-  const [isFocusItemNo, setIsFocusItemNo] = useState(false);
-  const [inputItemNo, setInputItemNo] = useState('');
-  const [isHovered, setIsHovered] = useState(false);
-  const [productDetails, setProductDetails] = useState({});
-  const [productParameters, setProductParameters] = useState({});
-
-  
-  // State for customer details
+  //----------------CUSTOMER DETAILS----------------------//
   const [inputs, setInputs] = useState({
     name: '',
     email: '',
@@ -52,26 +79,16 @@ function Hero() {
     number: false
   });
 
-  // State for billing details
-  const [billingDetails, setBillingDetails] = useState([]);
-
-  useEffect(() => {
-    // Fetch all products
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/product');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const products = await response.json();
-        const itemNumbers = products.totProducts.map(product => product.itemNo);
-        setItemNos(itemNumbers);
-      } catch (error) {
-        console.error('Error fetching the products', error);
-      }
-    };
-    fetchProducts();
-  }, []);
+  const fetchCustomerData = async (number) => {
+    try {
+      const response = await fetch(`http://localhost:3000/customer/exist/${number}`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching customer data:', error);
+      return null;
+    }
+  };
 
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -80,7 +97,7 @@ function Hero() {
       [name]: value
     });
 
-    if (name === 'number' && value.length === 11) {
+    if (name === 'number' && value.length === 10) {
       const customerData = await fetchCustomerData(value);
       if (customerData && customerData.exist) {
         setInputs({
@@ -100,6 +117,40 @@ function Hero() {
       }
     }
   };
+
+
+  //----------------PRODUCT DETAILS----------------------//
+  // State for amount calculation
+  const [price, setPrice] = useState('');
+  const [qty, setQty] = useState(''); // Default quantity to 1
+  const [disc, setDisc] = useState('');
+  const [amount, setAmount] = useState('');
+
+  // State for product details
+  const [itemNos, setItemNos] = useState([]);
+  const [isFocusItemNo, setIsFocusItemNo] = useState(false);
+  const [inputItemNo, setInputItemNo] = useState('');
+  const [isHovered, setIsHovered] = useState(false);
+  const [productDetails, setProductDetails] = useState({});
+  const [productParameters, setProductParameters] = useState({});
+  const [filteredItemNos, setFilteredItemNos] = useState([]);
+  
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/product');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const products = await response.json();
+        const uniqueItemNumbers = [...new Set(products.totProducts.map(product => product.itemNo))];
+        setItemNos(uniqueItemNumbers);
+      } catch (error) {
+        console.error('Error fetching the products', error);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -126,57 +177,76 @@ function Hero() {
     }
   };
 
-  const fetchCustomerData = async (number) => {
-    try {
-      const response = await fetch(`http://localhost:3000/customer/exist/${number}`);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching customer data:', error);
-      return null;
-    }
-  };
+
 
   const fetchProductDetails = async (itemNo) => {
     try {
       const response = await fetch(`http://localhost:3000/product`);
       const data = await response.json();
-      const product = data.totProducts.find(product => product.itemNo === itemNo);
-      return product;
+      const products = data.totProducts.filter(product => product.itemNo === itemNo);
+      return products; // Return all products with the same item number
     } catch (error) {
       console.error('Error fetching product details:', error);
       return null;
     }
   };
 
+  const [productVariants, setProductVariants] = useState([]);
+  const [selectedVariant, setSelectedVariant] = useState(null);
+  
   const handleItemNoChange = async (itemNo) => {
-    setInputItemNo(itemNo);
-    const product = await fetchProductDetails(itemNo);
-    if (product) {
-      setProductDetails(product);
-      setProductParameters(JSON.parse(product.parameter));
-      setPrice(product.price.toString());
-      setQty('1');
-      setDisc('');
-      setAmount('');
+  setInputItemNo(itemNo);
+  const products = await fetchProductDetails(itemNo);
+  if (products && products.length > 0) {
+    setProductVariants(products);
+    if (products.length === 1) {
+      selectProductVariant(products[0]);
     }
+  }
+  // Filter and limit suggestions to 5
+  const filtered = itemNos.filter(no => no.includes(itemNo)).slice(0, 5);
+  setFilteredItemNos(filtered);
+};
+  
+  const selectProductVariant = (product) => {
+    setSelectedVariant(product);
+    setProductDetails(product);
+    setProductParameters(JSON.parse(product.parameter));
+    setPrice(product.price.toString());
+    setQty('1');
+    setDisc('');
+    setAmount(product.price.toString());
   };
+  
 
   const calculateAmount = () => {
-    let discount = 0;
-    const totalPrice = parseFloat(price) * parseFloat(qty);
-    if (disc.trim().endsWith('%')) {
-      discount = totalPrice * parseFloat(disc) / 100;
+    if (price && qty) {
+      let discount = 0;
+      const totalPrice = parseFloat(price) * parseFloat(qty);
+      if (disc.trim().endsWith('%')) {
+        discount = totalPrice * parseFloat(disc) / 100;
+      } else {
+        discount = parseFloat(disc);
+      }
+      const discountedAmount = totalPrice - discount;
+      if(disc)
+      setAmount(discountedAmount.toFixed(2));
+      else
+      setAmount(totalPrice.toFixed(2))
+
     } else {
-      discount = parseFloat(disc);
+      setAmount(''); // Reset amount if price or qty is not set
     }
-    const discountedAmount = totalPrice - discount;
-    setAmount(discountedAmount.toFixed(2));
   };
 
   useEffect(() => {
     calculateAmount();
   }, [price, qty, disc]);
+  //-----------------------------------------------------//
+
+
+  //----------------BILLING DETAILS----------------------//
+  const [billingDetails, setBillingDetails] = useState([]);
 
   const addProductToBillingDetails = () => {
     if (!inputItemNo || !productDetails.itemName || !price || !qty || !disc || !amount) {
@@ -235,20 +305,92 @@ function Hero() {
     });
     setBillingDetails(updatedBillingDetails);
   };
+  //-----------------------------------------------------//
+  
+  //------------------TOTAL-------------------//
   const calculateTotalAmount = () => {
     return (billingDetails.reduce((total, detail) => total + parseFloat(detail.amount), 0) + parseFloat(additionalCharges)).toFixed(2);
   };
 
   const totalAmount = calculateTotalAmount();
 
+  //--------------------------------------------//
+  const productParametersToString = (params) => {
+    return Object.entries(params).map(([key, value]) => `${key}: ${value}`).join(', ');
+  };
+  const handlePrintBillAndGenerateInvoice = async () => {
+    const cashierName = document.querySelector('.cashier_name select').value;
+    const modeOfPayment = document.querySelector('.mode_of_payment select').value;
+    const location = "New York"; // Assuming a fixed location
+  
+    const billData = {
+      empID: cashierName,
+      customerName: inputs.name,
+      customerPhoneNo: inputs.number,
+      customerPoints: parseInt(inputs.points, 10),
+      emailId: inputs.email,
+      billNo: billNumber,
+      billAmount: parseFloat(totalAmount),
+      totGST: billingDetails.reduce((total, detail) => total + parseFloat(detail.gst), 0).toFixed(2),
+      bill: billingDetails.map(detail => ({
+        itemNo: detail.productName, // Assuming itemName corresponds to itemNo
+        quantity: parseInt(detail.qty, 10)
+      })),
+      modeOfPay: modeOfPayment,
+      location
+    };
+  
+    try {
+      const response = await fetch(`http://localhost:3000/bill`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(billData),
+      });
+  
+      const result = await response.json();
+      if (response.ok && result.success) {
+        alert('Billing data processed successfully');
+        clearFormData(); // Clear the form data
+      } else {
+        console.error('Failed to process billing data:', result.message);
+        alert('Failed to process billing data');
+      }
+    } catch (error) {
+      console.error('Error processing billing data:', error);
+      alert('Error processing billing data');
+    }
+  };
+  
+  const clearFormData = () => {
+    setInputs({
+      name: '',
+      email: '',
+      number: '',
+      points: ''
+    });
+    setBillingDetails([]);
+    setAdditionalCharges(0);
+    setPrice('');
+    setQty('');
+    setDisc('');
+    setAmount('');
+    setSelectedDate(getTodayDate());
+    setInputItemNo('');
+    setProductDetails({});
+    setProductParameters({});
+  };
+  
+
   return (
     <div className='main_hero'>
        <Additional_charge open={openAdditional_charge} toggler={toggleAdditional_charge} onAddCharge={handleAddCharge}/>
-       <Print_bill open={openPrint_bill} toggler={togglePrint_bill} totalAmount={totalAmount}/>
+      
       {/* BILL NUMBER AND CASHIER DETAILS */}
       <div className="cashier">
         <div className="details_cashier">
-          <div className="bill_no">BILL NUMBER : 1</div>
+          <div className="bill_no">BILL NUMBER : {billNumber} </div>
           <div className="cashier_name">
             <span>CASHIER NAME :</span>
             <select onFocus='this.size=10;' onBlur='this.size=0;' onChange='this.size=1; this.blur();'>
@@ -268,7 +410,12 @@ function Hero() {
               <option value="name3">CARD</option>
             </select>
           </div>
-          <input className="hero_date" type="date" name="" id="" />
+          <input
+        className="hero_date"
+        type="date"
+        value={selectedDate}
+        onChange={handleDateChange}
+      />
         </div>
       </div>
       {/* CUSTOMER DETAILS */}
@@ -376,47 +523,58 @@ function Hero() {
       </div>
       {/* ITEM DETAILS */}
       <div className="item_details">
-        <div className="choose_item_no">
-          <input
-            placeholder="Item No"
-            type="text"
-            className='item_no'
-            onBlur={() => {
-              if (!isHovered) setIsFocusItemNo(false);
-            }}
-            onFocus={() => setIsFocusItemNo(true)}
-            value={inputItemNo}
-            onChange={(e) => handleItemNoChange(e.target.value)}
-          />
-          {isFocusItemNo &&
-            <div
-              className="box_item_no"
-              onMouseEnter={() => { setIsHovered(true) }}
-              onMouseLeave={() => { setIsHovered(false) }}
-            >
-              {itemNos.map((itemNo, index) => {
-                const isMatch = itemNo.indexOf(inputItemNo) > -1;
-                return (
-                  <div key={index}>
-                    {isMatch &&
-                      <div className="options_item_no"
-                        onClick={() => {
-                          handleItemNoChange(itemNo);
-                          setIsFocusItemNo(false);
-                        }}>
-                        {itemNo}
-                      </div>}
-                  </div>
-                );
-              })}
-            </div>}
-        </div>
-        <input
-          placeholder='Item name'
-          className='product_details'
-          value={productDetails.itemName || ''}
-          readOnly
-        />
+  <div className="choose_item_no">
+    <input
+      placeholder="Item No"
+      type="text"
+      className='item_no'
+      onBlur={() => {
+        if (!isHovered) setIsFocusItemNo(false);
+      }}
+      onFocus={() => setIsFocusItemNo(true)}
+      value={inputItemNo}
+      onChange={(e) => handleItemNoChange(e.target.value)}
+    />
+    {isFocusItemNo &&
+      <div
+        className="box_item_no"
+        onMouseEnter={() => { setIsHovered(true) }}
+        onMouseLeave={() => { setIsHovered(false) }}
+      >
+        {filteredItemNos.map((itemNo, index) => (
+          <div key={index} className="options_item_no"
+            onClick={() => {
+              handleItemNoChange(itemNo);
+              setIsFocusItemNo(false);
+            }}>
+            {itemNo}
+          </div>
+        ))}
+      </div>
+    }
+  </div>
+  
+  {productVariants.length > 1 && <select
+    className='product_variant_selector'
+    disabled={!inputItemNo}
+    onChange={(e) => selectProductVariant(productVariants[e.target.value])}
+  >
+    <option value="" disabled selected>Select Product Variant</option>
+    {productVariants.map((product, index) => (
+      <option key={index} value={index}>
+        {product.itemName}
+      </option>
+    ))}
+  </select>
+}
+{productVariants.length === 1 && (
+  <input
+    placeholder='Item name'
+    className='product_details'
+    value={productVariants[0].itemName || ''}
+    readOnly
+  />
+)}
         <input
           type="text"
           className="price"
@@ -446,27 +604,30 @@ function Hero() {
           onBlur={calculateAmount}
         />
         <input
-          type="text"
+          type="text  "
           className="amount"
           placeholder='Amount'
-          value={amount}
+          value={amount || ''}
           readOnly
         />
-        <div className="additional_parameters">
-          {Object.keys(productParameters).map((key, index) => (
-            <div key={index} className="parameter_container">
-              <label className="parameter_label">{key.charAt(0).toUpperCase() + key.slice(1)} : </label>
-              <select
-                className="parameter"
-                value={productParameters[key]}
-                onChange={(e) => setProductParameters({ ...productParameters, [key]: e.target.value })}
-              >
-                <option value={productParameters[key]}>{productParameters[key]}</option>
-                {/* Add more options if needed */}
-              </select>
-            </div>
-          ))}
-        </div>
+{selectedVariant && (
+  <div className="additional_parameters">
+    {Object.keys(productParameters).map((key, index) => (
+      <div key={index} className="parameter_container">
+        <label className="parameter_label">{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
+        <select
+          className="parameter"
+          value={productParameters[key]}
+          onChange={(e) => setProductParameters({ ...productParameters, [key]: e.target.value })}
+        >
+          <option value={productParameters[key]}>{productParameters[key]}</option>
+          {/* Add more options if needed */}
+        </select>
+      </div>
+    ))}
+  </div>
+)}
+
       </div>
       <div className="add_product">
         <button onClick={addProductToBillingDetails}>Add</button>
@@ -483,7 +644,8 @@ function Hero() {
         </div>
         <div className="additionals">
           <button onClick={toggleAdditional_charge}>Add Additional charge</button>
-          <button onClick={togglePrint_bill}>Print Bill & Generate Invoice</button>
+          <button onClick={handlePrintBillAndGenerateInvoice}>Print Bill & Generate Invoice</button>
+
         </div>
       </div>
     </div>
