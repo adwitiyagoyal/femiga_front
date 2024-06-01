@@ -3,7 +3,9 @@ import './Hero.css';
 import Additional_charge from './Additional_charge';
 
 
-function Hero() {
+function Hero({location}) {
+  const [location_Login,setLocation] = useState(location);
+
 
   const [billNumber, setBillNumber] = useState('');
 
@@ -24,7 +26,7 @@ function Hero() {
     };
 
     fetchBillCount();
-  }, []);
+  }, );
   //----------------ADDITIONAL CHARGE AND PRINT BILL PART----------------------//
   const [openAdditional_charge,setopenAdditional_charge] = useState(false);
   
@@ -249,24 +251,27 @@ function Hero() {
   const [billingDetails, setBillingDetails] = useState([]);
 
   const addProductToBillingDetails = () => {
-    if (!inputItemNo || !productDetails.itemName || !price || !qty || !disc || !amount) {
+    if (!inputItemNo || !productDetails.itemName || !price || !qty  || !amount) {
       alert('Please fill in all fields.');
       return;
     }
+    
     const totalPrice = parseFloat(price) * parseFloat(qty);
     const gstAmount = totalPrice * 0.18;
-    const newBillingDetail = {
-      serialNo: billingDetails.length + 1,
-      productName: productDetails.itemName,
-      qty,
-      price,
-      gst: gstAmount.toFixed(2), // Assuming a fixed GST of 18%
-      disc,
-      amount
-    };
+     const newBillingDetail = {
+    serialNo: billingDetails.length + 1,
+    itemNo: inputItemNo, // Add this line
+    productName: productDetails.itemName,
+    qty,
+    price,
+    gst: gstAmount.toFixed(2), // Assuming a fixed GST of 18%
+    disc: disc || '0',
+    amount,
+  };
+    
 
     setBillingDetails([...billingDetails, newBillingDetail]);
-
+    console.log(billingDetails);
     // Reset fields
     setInputItemNo('');
     setProductDetails({});
@@ -274,6 +279,10 @@ function Hero() {
     setQty('1');
     setDisc('');
     setAmount('');
+    setProductParameters({});
+    setProductVariants([]);
+    setSelectedVariant(null);
+    setFilteredItemNos([]);
   };
 
   const removeBillingDetail = (serialNo) => {
@@ -284,8 +293,9 @@ function Hero() {
   };
 
   const handleInputChange = (index, field, value) => {
+    
     const updatedBillingDetails = billingDetails.map((detail, i) => {
-      console.log(billingDetails)
+      
       if (i === index) {
         detail[field] = value;
         if (field === 'price' || field === 'qty' || field === 'disc') {
@@ -321,24 +331,25 @@ function Hero() {
   const handlePrintBillAndGenerateInvoice = async () => {
     const cashierName = document.querySelector('.cashier_name select').value;
     const modeOfPayment = document.querySelector('.mode_of_payment select').value;
-    const location = "New York"; // Assuming a fixed location
+    const location = location_Login; // Assuming a fixed location
   
     const billData = {
       empID: cashierName,
       customerName: inputs.name,
-      customerPhoneNo: inputs.number,
+      customerPhoneNo: parseInt(inputs.number),
       customerPoints: parseInt(inputs.points, 10),
       emailId: inputs.email,
       billNo: billNumber,
       billAmount: parseFloat(totalAmount),
       totGST: billingDetails.reduce((total, detail) => total + parseFloat(detail.gst), 0).toFixed(2),
       bill: billingDetails.map(detail => ({
-        itemNo: detail.productName, // Assuming itemName corresponds to itemNo
+        itemNo: detail.itemNo, // Assuming itemName corresponds to itemNo
         quantity: parseInt(detail.qty, 10)
       })),
       modeOfPay: modeOfPayment,
       location
     };
+    console.log(billData);
   
     try {
       const response = await fetch(`http://localhost:3000/bill`, {
@@ -362,6 +373,15 @@ function Hero() {
       alert('Error processing billing data');
     }
   };
+
+  const clearProduct = ()=>{
+    setPrice('');
+    setQty('');
+    setDisc('');
+    setAmount('');
+    setProductParameters({});
+    setProductDetails({});
+  }
   
   const clearFormData = () => {
     setInputs({
@@ -376,10 +396,13 @@ function Hero() {
     setQty('');
     setDisc('');
     setAmount('');
-    setSelectedDate(getTodayDate());
     setInputItemNo('');
     setProductDetails({});
     setProductParameters({});
+    
+    setProductVariants([]);
+    setSelectedVariant(null);
+    setFilteredItemNos([]);
   };
   
 
@@ -393,21 +416,21 @@ function Hero() {
           <div className="bill_no">BILL NUMBER : {billNumber} </div>
           <div className="cashier_name">
             <span>CASHIER NAME :</span>
-            <select onFocus='this.size=10;' onBlur='this.size=0;' onChange='this.size=1; this.blur();'>
+            <select name = "cashier_name" caonFocus='this.size=10;' onBlur='this.size=0;' onChange='this.size=1; this.blur();'>
               <option value="" disabled selected hidden>SELECT</option>
-              <option value="name1">SRIRAM</option>
-              <option value="name2">OVIYA</option>
-              <option value="name3">ARUNA</option>
-              <option value="name4">HARSHITA</option>
-              <option value="name5">AYISHA</option>
+              <option value="SRIRAM">SRIRAM</option>
+              <option value="SRIRAM">OVIYA</option>
+              <option value="ARUNA">ARUNA</option>
+              <option value="HARSHITA">HARSHITA</option>
+              <option value="AYISHA">AYISHA</option>
             </select>
           </div>
           <div className="mode_of_payment">
             <span> Mode of Payment : </span>
             <select name="mode_of_payment" id="">
-              <option value="name2">CASH</option>
-              <option value="name1">UPI</option>
-              <option value="name3">CARD</option>
+              <option value="CASH">CASH</option>
+              <option value="UPI">UPI</option>
+              <option value="CARD">CARD</option>
             </select>
           </div>
           <input
@@ -427,7 +450,7 @@ function Hero() {
           <div className="customer_details_box">
             <span>NUMBER :</span>
             <input
-              type="string"
+              type="number"
               name="number"
               value={inputs.number}
               onChange={handleChange}
@@ -458,7 +481,7 @@ function Hero() {
             />
           </div>
           <div className="customer_details_box">
-            <span>CREDITS POINTS : </span>
+            <span>CREDIT POINTS : </span>
             <input
               type="text"
               name="points"

@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import './Login.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-function Login({ onLoginSuccess }) {
+function Login({ set_location,onLoginSuccess }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
+  
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -36,6 +37,8 @@ function Login({ onLoginSuccess }) {
 
       if (success) {
         setMessage('Login successful');
+        const location  = await data.message.location;
+        set_location(location);
         onLoginSuccess();
       }
     } catch (error) {

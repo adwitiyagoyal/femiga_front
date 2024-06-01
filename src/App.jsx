@@ -9,6 +9,7 @@ import Login from './components/Login';
 function App() {
   const [openSidebar, setOpenSidebar] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [location, setLocation] = useState('');
 
   const toggleSidebar = () => {
     setOpenSidebar(!openSidebar);
@@ -18,11 +19,17 @@ function App() {
     setIsLoggedIn(true);
   };
 
+  const setLocation_login = (location) =>{
+    setLocation(location)
+  }
+
+  
+
   return (
     <>
       <Sidebar openSidebar={openSidebar} toggleSidebar={toggleSidebar} />
       <Navbar toggleSidebar={toggleSidebar} />
-      {isLoggedIn ? <Hero /> : <Login onLoginSuccess={handleLoginSuccess} />}
+      {isLoggedIn ? <Hero location={location}/> : <Login set_location={setLocation_login} onLoginSuccess={handleLoginSuccess} />}
     </>
   );
 }
